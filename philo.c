@@ -1,5 +1,6 @@
 #include "philo.h"
 
+
 void take_fork()
 {
 	pthread_mutex_lock(&left_fork)
@@ -23,7 +24,7 @@ void eat()
 	before_to_die = get_time() + philo->time_to_die
 }
 
-void sleep_and_think()
+void sleep_think()
 {
 	pthread_mutex_unlock(&lfork);
 	pthread_mutex_unlock(&rfork);
@@ -33,30 +34,83 @@ void sleep_and_think()
 
 }
 
-void *philos_routine()
+void *check_death()
 {
-	check_if_dying()
+	while (1)
+	{
+		if (!philo->is_eating && get_time() > starving)
+		{
+			message("");
+			pthread_mutex_unlock(philo->state->dead_m);
+		}
+	}
+}
+
+void	*check_last_meal()
+{
+
+}
+
+void *philos_routine(void *philo_var, int )
+{
+	pthread_t tid;
+	t_philo *philo;
+
+	philo = (t_philo *)philo_var;
+	pthread_create(&tid, NULL, check_death, NULL);
+	pthread_detach(tid);
+	pthread_create(&tid, NULL, check_last_meal, NULL);
 	while(1)
 	{
 		take_fork();
 		eat();
-		sleep();
+		sleep_think();
 	}
 }
 
-void	init(pthread_t *philo, char **argv)
+void initialise_philo(t_state *s, t_philo *philo)
 {
-	int n_philo = ft_atoi(argv[1]);
+	int i;
 
-	philo = malloc(sizeof() * n_philo)
-	
+	i = 0;
+	while (i < s->n_philo)
+	{
+		s->philo[i].p_place = i;
+		s->philo[i].is_eating = 0;
+		s->philo[i].is_sleeping = 0;
+		s->philo[i].state = s;
+		s->philo[i].lfork = 0;
+		s->philo[i].rfork = 0;
+	}
+}
+
+void	init(t_state *s, char **argv, int argc)
+{
+	int i;
+
+	i =
+	s->n_philo = ft_atoi(argv[1]);
+	s->time_to_die = ft_atoi(argv[2]);
+	s->time_to_eat = ft_atoi(argv[3]);
+	s->time_to_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		s->n_of_meal = ft_atoi(argv[5]);
+	else
+		s->n_of_meal = 0;
+	if (s->n_philo <= 0 || s->time_to_die < 1)
+		return (1);
+	while (i < s->n_philo)
+		s->philo = malloc(sizeof(t_philo) * s->n_philo);
+	initialise_philo(s);
+	pthread_mutex_init(&s->dead_m, NULL);
+	pthread_mutex_lock(&s->dead_m);
 }
 
 int main(int argc, char **argv)
 {
-	pthread_t *philo;
-	init(philo, argv);
-	while ()
+	t_state *state;
+	init(state, argv);
+	while (state)
 	{
 		pthread_create()
 	}
