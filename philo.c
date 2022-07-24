@@ -59,13 +59,12 @@ void *philos_routine(void *philo_var, int )
 	philo = (t_philo *)philo_var;
 	pthread_create(&tid, NULL, check_death, NULL);
 	pthread_detach(tid);
-	pthread_create(&tid, NULL, check_last_meal, NULL);
+	if (philo->state->n_of_meal)
 	while(1)
-	{
-		take_fork();
-		eat();
-		sleep_think();
-	}
+		routine();
+	else
+	while (philo->resting_meal-- < 0)
+		routine();
 }
 
 void initialise_philo(t_state *s, t_philo *philo)
@@ -81,6 +80,8 @@ void initialise_philo(t_state *s, t_philo *philo)
 		s->philo[i].state = s;
 		s->philo[i].lfork = 0;
 		s->philo[i].rfork = 0;
+		s->philo[i].resting_meal = s->n_of_meal;
+
 	}
 }
 
@@ -110,10 +111,6 @@ int main(int argc, char **argv)
 {
 	t_state *state;
 	init(state, argv);
-	while (state)
-	{
-		pthread_create()
-	}
 	return (0);
 
 

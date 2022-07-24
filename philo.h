@@ -18,6 +18,7 @@ typedef struct s_philo
     int is_eating;
     int is_sleeping;
     int starting_point;
+	int resting_meal;
 	t_state *state;
     pthread_mutex_t write;
     int lfork;
