@@ -1,118 +1,80 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gbierny <gbierny@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/26 21:55:14 by gbierny           #+#    #+#             */
+/*   Updated: 2022/07/27 00:06:03 by gbierny          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 
-void take_fork()
+void	display_message(t_philo *philo, char *s)
 {
-	pthread_mutex_lock(&left_fork)
-	message();
-	pthread_mutex_lock(rihgt_fork)
-	message();
+	pthread_mutex_lock(&philo->state->write);
+	ft_putnbr(get_time() - philo->state->start);
+	ft_putstr("\t");
+	ft_putnbr(philo->p_place);
+	ft_putstr(s);
+	pthread_mutex_unlock(&philo->state->write);
 }
 
-
-display_message()
+void routine(t_philo *philo)
 {
-	pthread_mutex_lock(&write);
-	message(philo, time, action);
-	pthread_mutex_unlock(&write);
+	take_fork(philo);
+	eat(philo);
+	sleep_think(philo);
 }
 
-void eat()
+void	start_the_routine(t_state *state)
 {
-	display_message();
-	usleep(philo->time_to_eat)
-	before_to_die = get_time() + philo->time_to_die
+	int i;
+	pthread_t tid;
+	
+	i = 0;
+	while (i < state->n_philo)
+		pthread_create(&tid, NULL, philos_routine, &state->philo[i++]);
+		
 }
 
-void sleep_think()
-{
-	pthread_mutex_unlock(&lfork);
-	pthread_mutex_unlock(&rfork);
-	message();
-	usleep(time_to_sleep);
-	message();
-
-}
-
-void *check_death()
-{
-	while (1)
-	{
-		if (!philo->is_eating && get_time() > starving)
-		{
-			message("");
-			pthread_mutex_unlock(philo->state->dead_m);
-		}
-	}
-}
-
-void	*check_last_meal()
-{
-
-}
-
-void *philos_routine(void *philo_var, int )
+void	*philos_routine(void *philo_var)
 {
 	pthread_t tid;
 	t_philo *philo;
 
 	philo = (t_philo *)philo_var;
-	pthread_create(&tid, NULL, check_death, NULL);
+	pthread_create(&tid, NULL, check_death, philo_var);
 	pthread_detach(tid);
 	if (philo->state->n_of_meal)
 	while(1)
-		routine();
+		routine(philo);
 	else
 	while (philo->resting_meal-- < 0)
-		routine();
+		routine(philo);
+	pthread_exit(NULL);
 }
 
-void initialise_philo(t_state *s, t_philo *philo)
+int get_time(void)
 {
-	int i;
-
-	i = 0;
-	while (i < s->n_philo)
-	{
-		s->philo[i].p_place = i;
-		s->philo[i].is_eating = 0;
-		s->philo[i].is_sleeping = 0;
-		s->philo[i].state = s;
-		s->philo[i].lfork = 0;
-		s->philo[i].rfork = 0;
-		s->philo[i].resting_meal = s->n_of_meal;
-
-	}
-}
-
-void	init(t_state *s, char **argv, int argc)
-{
-	int i;
-
-	i =
-	s->n_philo = ft_atoi(argv[1]);
-	s->time_to_die = ft_atoi(argv[2]);
-	s->time_to_eat = ft_atoi(argv[3]);
-	s->time_to_sleep = ft_atoi(argv[4]);
-	if (argc == 6)
-		s->n_of_meal = ft_atoi(argv[5]);
-	else
-		s->n_of_meal = 0;
-	if (s->n_philo <= 0 || s->time_to_die < 1)
-		return (1);
-	while (i < s->n_philo)
-		s->philo = malloc(sizeof(t_philo) * s->n_philo);
-	initialise_philo(s);
-	pthread_mutex_init(&s->dead_m, NULL);
-	pthread_mutex_lock(&s->dead_m);
+    struct timeval t;
+    gettimeofday(&t, NULL);
+    return ((int)(t.tv_sec * 1000) + (int)(t.tv_usec / 1000));
 }
 
 int main(int argc, char **argv)
 {
-	t_state *state;
-	init(state, argv);
+	t_state state;
+	pthread_t tid;
+	init(&state, argv, argc);
+	if (argc == 6)
+		pthread_create(&tid, NULL, check_last_meal, &state);
+	start_the_routine(&state);
+	while (!state.dead)
+		usleep(100);
+	// clean_fork();
 	return (0);
-
-
-
 }
