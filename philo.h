@@ -4,6 +4,8 @@
 # include <pthread.h>
 # include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
+// #include <atomic.h>
 
 enum
 {
@@ -24,8 +26,10 @@ typedef struct s_philo
 	int resting_meal;
     int resting_time;
 	struct s_state *state;
-    int lfork;
-    int rfork;
+    // int lfork;
+    // int rfork;
+    int full;
+    pthread_mutex_t eat_m;
 }					t_philo;
 
 typedef struct s_state
@@ -37,10 +41,10 @@ typedef struct s_state
 	int	n_of_meal;
     int start;
     int dead;
+    int still_hungry;
     t_philo *philo;
     pthread_mutex_t write;
     pthread_mutex_t *fork;
-
 }		t_state;
 
 
@@ -50,11 +54,13 @@ void	*check_last_meal(void *state_v);
 void take_fork(t_philo *philo);
 void eat(t_philo *philo);
 void sleep_think(t_philo *philo);
-void	init(t_state *s, char **argv, int argc);
+int	init(t_state *s, char **argv, int argc);
 void	*philos_routine(void *philo_var);
 void    ft_putnbr(int n);
 size_t  ft_strlen(char *s);
 void ft_putstr(char *s);
 int get_time(void);
+int    ft_atoi(char *str);
+int error_message(char *s);
 
 #endif
