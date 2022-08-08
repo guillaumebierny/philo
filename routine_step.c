@@ -6,7 +6,7 @@
 /*   By: gbierny <gbierny@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 17:27:47 by gbierny           #+#    #+#             */
-/*   Updated: 2022/07/29 23:41:26 by gbierny          ###   ########.fr       */
+/*   Updated: 2022/08/02 13:11:48 by gbierny          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,29 +36,37 @@
 // 		odd_case(philo);
 // }
 
-void take_fork(t_philo *philo)
+int take_fork(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->state->fork[philo->p_place]);
-	display_message(philo, " has taken a fork\n");
+	if (display_message(philo, " has taken a fork\n", 0))
+		return (1);
 	pthread_mutex_lock(&philo->state->fork[(philo->p_place + 1) % philo->state->n_philo]);
-	display_message(philo, " has taken a fork\n");
+	if (display_message(philo, " has taken a fork\n", 0))
+		return (1);
+	return (0);
 }
 
-void eat(t_philo *philo)
+int eat(t_philo *philo)
 {
-	display_message(philo, " is eating\n");
-	if (philo->state->dead == 1)
-		return ;
+	if (display_message(philo, " is eating\n", 0))
+		return (1);
+	pthread_mutex_lock(&philo->temps);
 	philo->resting_time = get_time() + philo->state->time_to_die;
+	pthread_mutex_unlock(&philo->temps);
 	usleep(philo->state->time_to_eat * 1000);
-	philo->resting_meal--;
+	pthread_mutex_unlock(&philo->eat_m);
 	pthread_mutex_unlock(&philo->state->fork[philo->p_place]);
 	pthread_mutex_unlock(&philo->state->fork[(philo->p_place + 1) % philo->state->n_philo]);
+	return (0);
 }
 
-void sleep_think(t_philo *philo)
+int sleep_think(t_philo *philo)
 {
-	display_message(philo, " is sleeping\n");
+	if (display_message(philo, " is sleeping\n", 0))
+		return (1);
 	usleep(philo->state->time_to_sleep * 1000);
-	display_message(philo, " is thinking\n");
+	if (display_message(philo, " is thinking\n", 0))
+		return (1);
+	return (0);
 }

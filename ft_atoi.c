@@ -5,12 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbierny <gbierny@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/27 16:26:17 by gbierny           #+#    #+#             */
-/*   Updated: 2022/07/27 16:26:31 by gbierny          ###   ########.fr       */
+/*   Created: 2022/01/04 18:51:39 by gbierny           #+#    #+#             */
+/*   Updated: 2022/08/05 21:18:45 by gbierny          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "philo.h"
 
 static int	count_number(char *str, int *i, long int res, int *signe)
 {
@@ -39,7 +37,7 @@ static int	get_sign(char *str, int *i, int signe, int count)
 	return (signe);
 }
 
-int	ft_atoi(char *str)
+int	ft_atoi(const char *str)
 {
 	int			i;
 	int			signe;
@@ -56,6 +54,10 @@ int	ft_atoi(char *str)
 	if (signe == 0)
 		return (0);
 	res = count_number((char *)str, &i, res, &signe);
+	if (signe == -1)
+		return (-3);
+	if (str[i])
+		return (-2);
 	if (res == 0)
 		return (0);
 	else if (res == -1)

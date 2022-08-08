@@ -6,7 +6,7 @@
 /*   By: gbierny <gbierny@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 23:21:09 by gbierny           #+#    #+#             */
-/*   Updated: 2022/07/28 22:39:50 by gbierny          ###   ########.fr       */
+/*   Updated: 2022/07/31 00:02:02 by gbierny          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,3 +51,16 @@ int error_message(char *s)
     write(2, s, ft_strlen(s));
     return (1);
 }
+
+void    my_usleep(unsigned int n)
+{
+    int to_wait;
+
+    to_wait = get_time() + n;
+    while (get_time() < to_wait)
+        usleep(10);
+}
+// int main(int argc, char **argv)
+// {
+//     ft_putnbr(atoi(argv[1]));
+// }

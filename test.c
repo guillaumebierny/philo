@@ -17,23 +17,25 @@ typedef struct s
 
 void *test(void *v_v)
 {
-    t *v;
-    v = (t *)v_v;
-    sleep(2);
-    v->x = 0;
-    sleep(2);
-    printf("fin du thread\n");
-    pthread_exit(NULL);
+    int i = 0;
+    int x = 3;
+    while (x--)
+        i += 5;
+    printf("i = %d\n", i);
+    return (0);
 }
 
 int main()
 {
     t v;
     v.x = 1;
+    int i;
+    i = 0;
     pthread_t thread;
-    pthread_create(&thread, NULL, test, &v);
-    pthread_detach(thread);
-    while (v.x)
-        usleep(100);
-    printf("terminer\n");
+    int x = 3;
+    while (x--)
+        pthread_create(&thread, NULL, test, &v);
+    x = 3;
+    while (x--)
+        pthread_join(thread, NULL);
 }
