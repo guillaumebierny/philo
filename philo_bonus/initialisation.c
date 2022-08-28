@@ -6,7 +6,7 @@
 /*   By: gbierny <gbierny@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 22:55:16 by gbierny           #+#    #+#             */
-/*   Updated: 2022/08/18 04:33:16 by gbierny          ###   ########.fr       */
+/*   Updated: 2022/08/28 23:30:08 by gbierny          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ void initialise_philo(t_state *s)
 		s->philo[i].is_sleeping = 0;
 		s->philo[i].state = s;
 		s->philo[i].resting_meal = s->n_of_meal;
-		s->philo[i].resting_time = (s->start + s->time_to_die);
 		s->philo[i].state = s;
 		s->philo[i].pid = 0;
+		s->philo[i].resting_time = s->start + s->time_to_die;
+		pthread_mutex_init(&s->philo[i].mut_eat, NULL);
 		i++;
 	}
 }
@@ -62,14 +63,24 @@ int	initialise_v(t_state *s, char **argv, int argc)
 	else
 		s->n_of_meal = 0;
 	if (s->n_of_meal < 0)
-		return (error_message("number of meal argument in invalid\n"));
+		error_message("number of meal argument in invalid\n");
 	if (s->n_philo <= 0 || s->time_to_die < 1 || s->n_philo > 200 || s->time_to_die < 60 || s->time_to_eat < 60)
-		return (error_message("mauvais arguments\n"));
+		error_message("mauvais arguments\n");
 	if(!(s->philo = malloc(sizeof(t_philo) * s->n_philo)))
-		return (error_message("error: malloc philo\n"));
+		error_message("error: malloc philo\n");
     i = 0;
+	sem_unlink("sem_write");
+	sem_unlink("sem_fork");
+	sem_unlink("sem_died");
+	sem_unlink("sem_finish");
+	sem_unlink("sem_meal");
     s->sem_write = sem_open("sem_write", O_CREAT | O_EXCL, 0644, 1);
-    s->sem_write = sem_open("sem_fork", O_CREAT | O_EXCL, 0644, 1);
+    s->sem_fork = sem_open("sem_fork", O_CREAT | O_EXCL, 0644, s->n_philo);
+	s->sem_died = sem_open("sem_died", O_CREAT | O_EXCL, 0644, 1);
+	s->sem_finish = sem_open("sem_finish", O_CREAT | O_EXCL, 0644, 1);
+	s->sem_meal = sem_open("sem_meal", O_CREAT | O_EXCL, 0644, 1);
+	sem_wait(s->sem_meal);
+	sem_wait(s->sem_finish);
 	s->start = get_time();
     initialise_philo(s);
 	return (0);
