@@ -1,4 +1,4 @@
-SRC = philo.c routine_step.c utils.c check_end.c initialise.c ft_atoi.c
+SRC = philo.c routine_step.c utils.c check_end.c initialise.c ft_atoi.c routine.c
 OBJ = $(SRC:.c=.o)
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror

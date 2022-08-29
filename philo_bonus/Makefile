@@ -1,5 +1,5 @@
 SRC = main.c check_end.c initialisation.c ft_atoi.c \
-		utils.c
+		utils.c main_utils.c routine_step.c
 OBJ = $(SRC:.c=.o)
 CC = gcc $(CFLAGS)
 NAME = philo_bonus
