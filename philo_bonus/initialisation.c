@@ -6,7 +6,7 @@
 /*   By: gbierny <gbierny@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 22:55:16 by gbierny           #+#    #+#             */
-/*   Updated: 2022/08/29 22:45:19 by gbierny          ###   ########.fr       */
+/*   Updated: 2023/01/09 16:20:21 by gbierny          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	initialise_v(t_state *s, char **argv, int argc)
 	set_arguments_value(s, argv, argc);
 	if (s->n_philo <= 0 || s->time_to_die < 1 || s->n_philo > 200
 		|| s->time_to_die < 60 || s->time_to_eat < 60)
-		error_message("mauvais arguments\n");
+		error_message("wrong argument\n");
 	s->philo = malloc(sizeof(t_philo) * s->n_philo);
 	if (!s->philo)
 		error_message("error: malloc philo\n");
