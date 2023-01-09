@@ -6,7 +6,7 @@
 /*   By: gbierny <gbierny@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 23:21:09 by gbierny           #+#    #+#             */
-/*   Updated: 2022/08/29 23:05:13 by gbierny          ###   ########.fr       */
+/*   Updated: 2023/01/09 16:06:53 by gbierny          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_putstr(char *s)
 	write(1, s, ft_strlen(s));
 }
 
-int	error_message(char *s)
+int	err_msg(char *s)
 {
 	write(2, s, ft_strlen(s));
 	return (1);
@@ -60,5 +60,5 @@ void	my_usleep(unsigned int n)
 
 	to_wait = get_time() + n;
 	while (get_time() < to_wait)
-		usleep(10);
+		usleep(100);
 }

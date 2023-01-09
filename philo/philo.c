@@ -6,7 +6,7 @@
 /*   By: gbierny <gbierny@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 21:55:14 by gbierny           #+#    #+#             */
-/*   Updated: 2022/08/29 22:08:02 by gbierny          ###   ########.fr       */
+/*   Updated: 2023/01/09 16:11:26 by gbierny          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ int	main(int argc, char **argv)
 
 	i = 0;
 	if (argc < 5 || argc > 6)
-		return (error_message("pas le bon nombre d'argument:\n"));
+		return (err_msg("put: exec t_death t_eat t_sleep (n_meal)\n"));
 	if (init(&state, argv, argc))
-		return (error_message("probleme avec l'initialisation des variables\n"));
+		return (err_msg("initialisation of variable issue\n"));
 	if (argc == 6)
 		pthread_create(&tid, NULL, check_last_meal, &state);
 	start_the_routine(&state);

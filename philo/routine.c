@@ -6,7 +6,7 @@
 /*   By: gbierny <gbierny@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 22:07:39 by gbierny           #+#    #+#             */
-/*   Updated: 2022/08/29 22:08:15 by gbierny          ###   ########.fr       */
+/*   Updated: 2023/01/09 16:06:53 by gbierny          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	start_the_routine(t_state *state)
 	pthread_t	*philo_thread;
 
 	philo_thread = malloc(sizeof(pthread_t) * state->n_philo);
+	if (!philo_thread)
+		return (err_msg("error malloc"));
 	i = 0;
 	while (i < state->n_philo - 1)
 		launch_thread(philo_thread, &i, state);

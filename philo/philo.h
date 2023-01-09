@@ -6,7 +6,7 @@
 /*   By: gbierny <gbierny@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 22:33:18 by gbierny           #+#    #+#             */
-/*   Updated: 2022/08/29 22:36:14 by gbierny          ###   ########.fr       */
+/*   Updated: 2023/01/09 16:06:53 by gbierny          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ size_t	ft_strlen(char *s);
 void	ft_putstr(char *s);
 int		get_time(void);
 int		ft_atoi(char *str);
-int		error_message(char *s);
+int		err_msg(char *s);
 void	my_usleep(unsigned int n);
 void	f_unlock(t_state *s);
 int		start_the_routine(t_state *state);
