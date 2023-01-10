@@ -6,7 +6,7 @@
 /*   By: gbierny <gbierny@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 22:55:33 by gbierny           #+#    #+#             */
-/*   Updated: 2023/01/09 16:23:00 by gbierny          ###   ########.fr       */
+/*   Updated: 2023/01/10 15:29:48 by gbierny          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	error_message(char *s)
 int	check_args(int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
-		error_message("put: t_death t_eat t_sleep (n_meal)\n");
+		error_message("number of arguments invalid");
 	(void)argv;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gbierny <gbierny@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 21:55:14 by gbierny           #+#    #+#             */
-/*   Updated: 2023/01/09 16:11:26 by gbierny          ###   ########.fr       */
+/*   Updated: 2023/01/10 15:31:34 by gbierny          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	main(int argc, char **argv)
 
 	i = 0;
 	if (argc < 5 || argc > 6)
-		return (err_msg("put: exec t_death t_eat t_sleep (n_meal)\n"));
+		return (err_msg("number of argument invalid\n"));
 	if (init(&state, argv, argc))
 		return (err_msg("initialisation of variable issue\n"));
 	if (argc == 6)
